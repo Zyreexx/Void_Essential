@@ -21,69 +21,84 @@ logger = logging.getLogger(__name__)
 
 def seed_database():
     """Seeds the database with categories, initial admin user, and Void Essentials product catalog."""
-    
-    # 1. Seed Categories if empty
-    if Category.query.count() == 0:
-        logger.info("Seeding categories...")
-        categories_data = [
-            {
-                "name": "Men",
-                "slug": "men",
-                "tagline": "Elevated everyday essentials.",
-                "image_url": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1000&auto=format&fit=crop",
-                "display_order": 1
-            },
-            {
-                "name": "Women",
-                "slug": "women",
-                "tagline": "Effortless style for every you.",
-                "image_url": "/images/hero-model.jpg",
-                "display_order": 2
-            },
-            {
-                "name": "Accessories",
-                "slug": "accessories",
-                "tagline": "Comfort meets cool everyday.",
-                "image_url": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1000&auto=format&fit=crop",
-                "display_order": 3
-            }
-        ]
-        for c in categories_data:
-            cat = Category(**c)
-            db.session.add(cat)
-        db.session.commit()
+    try:
+        # 1. Seed Categories if empty
+        if Category.query.count() == 0:
+            logger.info("Seeding categories...")
+            categories_data = [
+                {
+                    "name": "Men",
+                    "slug": "men",
+                    "tagline": "Elevated everyday essentials.",
+                    "image_url": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1000&auto=format&fit=crop",
+                    "display_order": 1
+                },
+                {
+                    "name": "Women",
+                    "slug": "women",
+                    "tagline": "Effortless style for every you.",
+                    "image_url": "/images/hero-model.jpg",
+                    "display_order": 2
+                },
+                {
+                    "name": "Accessories",
+                    "slug": "accessories",
+                    "tagline": "Comfort meets cool everyday.",
+                    "image_url": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1000&auto=format&fit=crop",
+                    "display_order": 3
+                }
+            ]
+            for c in categories_data:
+                existing = Category.query.filter_by(slug=c["slug"]).first()
+                if not existing:
+                    db.session.add(Category(**c))
+            try:
+                db.session.commit()
+            except Exception:
+                db.session.rollback()
+            
+        men_cat = Category.query.filter((Category.slug == "men") | (Category.name == "Men")).first()
+        women_cat = Category.query.filter((Category.slug == "women") | (Category.name == "Women")).first()
+        acc_cat = Category.query.filter((Category.slug == "accessories") | (Category.name == "Accessories")).first()
+
+        # Defensive fallback if categories were not found
+        created_any = False
+        if not men_cat:
+            men_cat = Category(name="Men", slug="men", tagline="Elevated everyday essentials.", display_order=1)
+            db.session.add(men_cat)
+            created_any = True
+        if not women_cat:
+            women_cat = Category(name="Women", slug="women", tagline="Effortless style for every you.", display_order=2)
+            db.session.add(women_cat)
+            created_any = True
+        if not acc_cat:
+            acc_cat = Category(name="Accessories", slug="accessories", tagline="Comfort meets cool everyday.", display_order=3)
+            db.session.add(acc_cat)
+            created_any = True
+
+        if created_any:
+            try:
+                db.session.commit()
+            except Exception:
+                db.session.rollback()
         
-    men_cat = Category.query.filter_by(slug="men").first()
-    women_cat = Category.query.filter_by(slug="women").first()
-    acc_cat = Category.query.filter_by(slug="accessories").first()
+        # 2. Seed Initial Admin User if empty
+        if User.query.filter_by(email="admin@voidessentials.store").first() is None:
+            try:
+                admin = User(
+                    email="admin@voidessentials.store",
+                    full_name="Void Atelier Director",
+                    role="admin"
+                )
+                admin.set_password("VoidSecure2026!")
+                db.session.add(admin)
+                db.session.commit()
+                logger.info("Admin user seeded: admin@voidessentials.store")
+            except Exception:
+                db.session.rollback()
 
-    # Defensive fallback if categories were not found
-    if not men_cat:
-        men_cat = Category(name="Men", slug="men", tagline="Elevated everyday essentials.", display_order=1)
-        db.session.add(men_cat)
-    if not women_cat:
-        women_cat = Category(name="Women", slug="women", tagline="Effortless style for every you.", display_order=2)
-        db.session.add(women_cat)
-    if not acc_cat:
-        acc_cat = Category(name="Accessories", slug="accessories", tagline="Comfort meets cool everyday.", display_order=3)
-        db.session.add(acc_cat)
-    db.session.commit()
-    
-    # 2. Seed Initial Admin User if empty
-    if User.query.filter_by(email="admin@voidessentials.store").first() is None:
-        admin = User(
-            email="admin@voidessentials.store",
-            full_name="Void Atelier Director",
-            role="admin"
-        )
-        admin.set_password("VoidSecure2026!")
-        db.session.add(admin)
-        db.session.commit()
-        logger.info("Admin user seeded: admin@voidessentials.store")
-
-    # 3. Seed Products if empty
-    if Product.query.count() == 0:
-        logger.info("Seeding Void Essentials catalog...")
+        # 3. Seed Products (Idempotent: only inserts missing items)
+        logger.info("Checking Void Essentials catalog...")
         
         products_data = [
             {
@@ -516,9 +531,16 @@ def seed_database():
             }
         ]
         
-        for p_data in products_data:
-            images = p_data.pop("images")
-            variants = p_data.pop("variants")
+        added_count = 0
+        for p_raw in products_data:
+            slug = p_raw.get("slug")
+            existing_prod = Product.query.filter_by(slug=slug).first()
+            if existing_prod:
+                continue
+
+            p_data = dict(p_raw)
+            images = p_data.pop("images", [])
+            variants = p_data.pop("variants", [])
             
             product = Product(**p_data)
             db.session.add(product)
@@ -545,9 +567,21 @@ def seed_database():
                     price_override=var.get("price_override")
                 )
                 db.session.add(p_var)
+            added_count += 1
                 
-        db.session.commit()
-        logger.info(f"Seeded {len(products_data)} products successfully.")
+        if added_count > 0:
+            try:
+                db.session.commit()
+                logger.info(f"Seeded {added_count} new products successfully.")
+            except Exception as e:
+                db.session.rollback()
+                logger.warning(f"Product seed commit notice: {e}")
+        else:
+            logger.info("All products already seeded. Catalog is up to date.")
+
+    except Exception as err:
+        db.session.rollback()
+        logger.error(f"Seeder execution handled with notice: {err}")
 
 if __name__ == "__main__":
     try:
