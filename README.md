@@ -1,126 +1,275 @@
-# VOID ESSENTIALS — Premium Clothing E-Commerce Platform
+<div align="center">
 
-> **"Essentials, without excess."**  
-> An architectural, minimalist full-stack clothing e-commerce web platform inspired directly by editorial fashion lookbooks and the Void Essentials atelier.
+```
+██╗   ██╗ ██████╗ ██╗██████╗ 
+██║   ██║██╔═══██╗██║██╔══██╗
+██║   ██║██║   ██║██║██║  ██║
+╚██╗ ██╔╝██║   ██║██║██║  ██║
+ ╚████╔╝ ╚██████╔╝██║██████╔╝
+  ╚═══╝   ╚═════╝ ╚═╝╚═════╝ 
+  E  S  S  E  N  T  I  A  L  S
+```
+
+# ✦ VOID ESSENTIALS ✦
+### *Architectural Minimalist E-Commerce Platform*
+
+[![Next.js](https://img.shields.io/badge/Next.js-14.2-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-18.3-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-0A0A0A?style=for-the-badge&logo=tailwindcss&logoColor=38BDF8)](https://tailwindcss.com/)
+[![Flask](https://img.shields.io/badge/Flask-3.0-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org/)
+[![SQLite / PostgreSQL](https://img.shields.io/badge/Database-SQLite%20%7C%20Postgres-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Redis & Celery](https://img.shields.io/badge/Worker-Redis%20%2B%20Celery-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
+[![License](https://img.shields.io/badge/License-MIT-white?style=for-the-badge&logoColor=black)](LICENSE)
+
+<br/>
+
+> *"Essentials, without excess."*  
+> An editorial full-stack clothing e-commerce web platform inspired by luxury atelier lookbooks, minimalist typography, and high-performance decoupled web engineering.
+
+<p align="center">
+  <a href="#-key-features">Features</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-api-reference">API Docs</a> •
+  <a href="#-environment-variables">Config</a> •
+  <a href="RUN.md">Run Guide (RUN.md)</a>
+</p>
+
+</div>
 
 ---
 
-## 1. Project Overview & Visual Reference
+## 📖 Table of Contents
 
-This project pairs high-fashion editorial aesthetics with a decoupled, high-performance web architecture:
-
-* **Visual Reference Mapping (GAZU Layout)**:
-  * **Top Announcement Bar**: Jet black (`#0A0A0A`) with shipping thresholds and global utilities.
-  * **Minimalist Header**: Uppercase tracked typography (`MEN`, `WOMEN`, `ACCESSORIES`, `ARCHIVE`), centered bold monolithic brand mark (`VOID`), and utility action cluster (`SEARCH`, `LOGIN/ACCOUNT`, `WISHLIST`, `CART`).
-  * **Editorial Hero Canvas**: Oversized watermark brand lettering (`VOID`) layered behind an editorial cutout fashion model, asymmetrical typography (*"FASHION THAT MOVES WITH YOU."*), dual CTAs (*"SHOP NOW"* and *"EXPLORE NEW IN"*), and a seasonal badge (*"NEW COLLECTION 2025/2026"*).
-  * **Solid Dark Band**: High-contrast black transition section presenting curated portals (`MEN`, `WOMEN`, `ACCESSORIES`) with thumbnail cards and directional arrow links.
-  * **Split Campaign Featurette ("NEW VIBES")**: High-contrast headline, narrative copy, and editorial portrait photography.
-  * **Trust Pillars**: Balanced 4-column value proposition strip (Fast Delivery, Easy Returns, Quality Assured, Secure Payment).
-  * **Curated Grid ("BEST OF VOID")**: Hover image transitions, variant indicators, and quick add-to-bag capabilities.
-
-* **Verified Brand Data (`voidessentials.store`)**:
-  * **Brand Name**: VOID ESSENTIALS
-  * **Slogan**: *"Essentials, without excess"*
-  * **Verified Client Support**: `support@voidessentials.store`
-  * **Model**: Atelier restock cycles, private archival fittings, and heavy organic textiles (320–500 GSM).
-  * **Marked Placeholders**: Physical showroom address (`[Placeholder: Brand Flagship Atelier, 104 Mercer St, Soho, New York, NY 10012]`) and phone line (`[Placeholder: +1 (800) 555-VOID]`).
+- [✦ Brand Philosophy & Visual Identity](#-brand-philosophy--visual-identity)
+- [✨ Key Features](#-key-features)
+- [🏗️ System Architecture](#️-system-architecture)
+- [💻 Tech Stack](#-tech-stack)
+- [📁 Project Structure](#-project-structure)
+- [⚡ Quick Start & Setup](#-quick-start--setup)
+- [🔑 Default Admin Credentials](#-default-admin-credentials)
+- [📡 API Reference](#-api-reference)
+- [⚙️ Environment Variables](#️-environment-variables)
+- [📜 License](#-license)
 
 ---
 
-## 2. Technology Stack
+## ✦ Brand Philosophy & Visual Identity
 
-* **Frontend**: Next.js 14, React 18, Tailwind CSS, Lucide Icons, GSAP, Anime.js.
-* **Backend**: Python 3, Flask, Flask-SQLAlchemy (SQLite default, PostgreSQL-ready), Flask-JWT-Extended, Flask-Cors.
-* **Cache & Worker**: Redis (message broker and cache), Celery (transactional email simulation, CSV export pipelines, restock notifications).
-* **Storage**: SQLite (`instance/void_store.db`) with zero SQLite-specific quirks, ready to switch to PostgreSQL via `DATABASE_URL`.
+**VOID ESSENTIALS** balances haute-couture editorial aesthetics with brutalist, minimalist digital architecture:
+
+* **Monochrome Palette**: High-contrast jet black (`#0A0A0A`), crisp stark whites, and subdued slate tones.
+* **Editorial Hero Canvas**: Monolithic watermark brand lettering layered behind cutout fashion figures, asymmetrical typography (*"FASHION THAT MOVES WITH YOU"*), and seasonal badge accents.
+* **Curated Capsule Portals**: Dedicated visual gateways for **MEN**, **WOMEN**, **ACCESSORIES**, and **ARCHIVE**.
+* **Heavyweight Textiles**: Product design modeling archival restock cycles, 320–500 GSM organic cotton textiles, and private fitting services.
+* **Micro-Interactions**: Cinematic hover reveals, dynamic slide-in cart drawers, and smooth GSAP/Anime.js page transitions.
 
 ---
 
-## 3. Directory Layout
+## ✨ Key Features
+
+| Domain | Capabilities |
+| :--- | :--- |
+| **🛍️ Modern Storefront** | Next.js 14 App Router, dynamic server/client components, responsive drawer cart, instant search & wishlist. |
+| **🎨 Editorial Lookbook** | Asymmetrical layouts, high-res lookbook photography, fabric GSM detail tabs, and interactive size/color matrix. |
+| **🔒 Secure Authentication** | Flask-JWT-Extended tokens, bcrypt password hashing, token refreshes, and protected user profiles. |
+| **📦 Order Management** | Automated checkout calculation, order reference generation (`VOID-XXXXXXXX`), and order tracking endpoints. |
+| **⚡ Graceful Celery Fallback** | Background asynchronous processing for transactional emails & exports with zero-config in-process fallback when Redis is absent. |
+| **🌱 Auto-Seeded Database** | SQLite or PostgreSQL auto-initialized on first run with complete product categories and rich mock catalog. |
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TD
+    subgraph Client["Frontend Client (Next.js 14)"]
+        UI["Modern Editorial UI\n(React 18 + Tailwind)"]
+        Cart["Cart & Wishlist State\n(Context API)"]
+        ClientFetch["API Client\n(Fetch with JWT)"]
+    end
+
+    subgraph Server["Backend Engine (Flask 3.0)"]
+        AuthRoute["Auth Blueprint\n(/api/v1/auth)"]
+        ProdRoute["Products & Categories\n(/api/v1/products)"]
+        OrderRoute["Orders Blueprint\n(/api/v1/orders)"]
+        ContactRoute["Contact & Newsletter\n(/api/v1/contact)"]
+    end
+
+    subgraph Storage["Persistence & Queues"]
+        DB[(Database\nSQLite / PostgreSQL)]
+        Redis[(Redis Broker)]
+        CeleryWorker["Celery Worker\n(Email & Tasks)"]
+    end
+
+    UI --> Cart
+    Cart --> ClientFetch
+    ClientFetch -->|REST / JSON| Server
+
+    AuthRoute --> DB
+    ProdRoute --> DB
+    OrderRoute --> DB
+    OrderRoute -.->|Async Queue| Redis
+    Redis -.-> CeleryWorker
+```
+
+---
+
+## 💻 Tech Stack
+
+### Frontend
+- **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
+- **Library**: [React 18](https://react.dev/)
+- **Styling**: [Tailwind CSS 3.4](https://tailwindcss.com/)
+- **Animation**: [GSAP 3.12](https://greensock.com/gsap/) & [Anime.js](https://animejs.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+
+### Backend
+- **Framework**: [Flask 3.0](https://flask.palletsprojects.com/)
+- **ORM**: [Flask-SQLAlchemy 3.1](https://flask-sqlalchemy.palletsprojects.com/)
+- **Security**: [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/), Werkzeug Security
+- **Cross-Origin**: [Flask-CORS](https://flask-cors.readthedocs.io/)
+- **Task Queue**: [Celery 5.3](https://docs.celeryq.dev/) + [Redis 5.0](https://redis.io/) (with graceful sync fallback)
+
+---
+
+## 📁 Project Structure
 
 ```
 Void/
-├── docs/                      # Architectural & planning specifications
-│   ├── architecture.md
-│   ├── design.md
-│   ├── memory.md
-│   ├── phases.md
-│   ├── prd.md
-│   └── rules.md
-├── frontend/                  # Next.js Application
-│   ├── app/                   # App Router pages (layout, home, catalog, products, checkout, about, contact)
-│   ├── components/            # Layout, Home, Product, Cart, Auth, Search, UI components
-│   ├── lib/                   # API client, Global Context & Store, Utilities
-│   ├── styles/                # Tailwind CSS global styles
-│   ├── tailwind.config.js
-│   └── package.json
-├── backend/                   # Flask REST API Engine
+├── backend/                        # Flask REST API Engine
 │   ├── app/
-│   │   ├── models/            # SQLAlchemy database models
-│   │   ├── routes/            # Blueprint endpoints (auth, products, categories, orders, contact, health)
-│   │   ├── services/          # Database seeder with Void Essentials catalog
-│   │   └── tasks/             # Celery background workers
-│   ├── config.py              # Configuration & Environment loading
-│   ├── run.py                 # Backend entry point (Port 5001)
-│   └── requirements.txt
-├── .env.example               # Environment variables template
-└── README.md
+│   │   ├── models/                 # User, Product, Category, Order models
+│   │   ├── routes/                 # Blueprints (auth, products, orders, contact)
+│   │   ├── services/               # Database seeder & catalog filler
+│   │   └── tasks/                  # Celery background workers
+│   ├── instance/                   # SQLite database instance
+│   ├── config.py                   # App configuration & environment loader
+│   ├── requirements.txt            # Python dependencies
+│   └── run.py                      # Backend entry point (Port 5001)
+├── frontend/                       # Next.js 14 Storefront
+│   ├── app/                        # App Router (pages: home, catalog, product, checkout)
+│   ├── components/                 # UI components (Header, Hero, CartDrawer, Footer)
+│   ├── lib/                        # API client, cart context, utilities
+│   ├── styles/                     # Tailwind globals & typography
+│   ├── package.json                # Node dependencies & scripts
+│   └── tailwind.config.js          # Brand theme configuration
+├── docs/                           # Architectural specs & design guides
+├── run-dev.bat                     # Windows 1-click launcher batch script
+├── run-dev.ps1                     # Windows 1-click launcher PowerShell script
+├── RUN.md                          # Dedicated run and operational manual
+├── .env.example                    # Environment variable template
+└── README.md                       # Project documentation
 ```
 
 ---
 
-## 4. Setup & Running Instructions
+## ⚡ Quick Start & Setup
 
-### 4.1 Backend Setup (Flask API)
+> [!TIP]
+> For step-by-step instructions and single-command startup, refer to **[`RUN.md`](RUN.md)**.
 
-1. Open a terminal in the project root:
-   ```bash
-   python -m pip install -r backend/requirements.txt
-   ```
-2. Start the Flask API server:
-   ```bash
-   python backend/run.py
-   ```
-   * The API runs at: `http://127.0.0.1:5001`
-   * Health check endpoint: `http://127.0.0.1:5001/api/v1/health`
-   * On first boot, the database is automatically created and seeded with categories, initial admin user (`admin@voidessentials.store` / `VoidSecure2026!`), and product catalog.
-
-### 4.2 Frontend Setup (Next.js)
-
-1. Open a second terminal and navigate to the frontend directory:
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-2. Open your browser and navigate to:
-   ```
-   http://localhost:3000
-   ```
+### 1. One-Click Launch (Windows)
+Double-click **`run-dev.bat`** or run in PowerShell:
+```powershell
+.\run-dev.ps1
+```
 
 ---
 
-## 5. Starting Redis & Celery (Optional / Background Worker)
+### 2. Manual Startup (Two Terminals)
 
-The platform is designed with **graceful degradation**: if Redis or Celery is not active during local development, the backend executes background tasks (e.g. order receipts, welcome emails) safely in synchronous fallback mode without throwing HTTP errors.
+#### 🐍 Terminal 1: Backend (Flask)
+```bash
+# Navigate to project root
+cd Void
 
-To run Celery and Redis in production or full background mode:
+# Install Python requirements
+python -m pip install -r backend/requirements.txt
 
-1. **Start Redis Server**:
-   * *Windows (WSL / Native)*: `redis-server`
-   * *Docker*: `docker run -d -p 6379:6379 redis:alpine`
-2. **Start Celery Worker**:
-   ```bash
-   celery -A backend.app.tasks.celery_tasks.celery_app worker --loglevel=info -P solo
-   ```
-   *(Note: `-P solo` or `-P threads` is recommended on Windows).*
+# Start Flask API server (Port 5001)
+python backend/run.py
+```
+
+#### 🌐 Terminal 2: Frontend (Next.js)
+```bash
+# Navigate to frontend folder
+cd Void/frontend
+
+# Install dependencies
+npm install
+
+# Start development server (Port 3000)
+npm run dev
+```
+
+Visit **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ---
 
-## 6. End-to-End Verification
+## 🔑 Default Admin Credentials
 
-* **Home Page**: Experience the hero watermark typography, layered editorial cutout, dark category band, and curated products.
-* **Catalog & Filtering**: Browse `/catalog` with category filtering (`Men`, `Women`, `Accessories`, `Archival Only`) and price sorting.
-* **Product Detail Page**: Visit any item to toggle sizes, color chips, and inspect fabric composition tabs.
-* **Shopping Cart & Checkout**: Add pieces to the slide-in cart drawer, adjust quantities, and test the simulated checkout with instant order generation (`VOID-XXXXXXXX`).
-* **Inquiry & Newsletter**: Submit messages via `/contact` and test newsletter subscription in the footer.
+When the backend boots for the first time, it automatically creates the database schema and populates it with categories, catalog items, and a default superuser:
+
+```yaml
+Email: admin@voidessentials.store
+Password: VoidSecure2026!
+Role: Admin
+```
+
+---
+
+## 📡 API Reference
+
+Base URL: `http://localhost:5001/api/v1`
+
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/health` | Service health & database connectivity probe | No |
+| `POST` | `/auth/register` | Register a new customer account | No |
+| `POST` | `/auth/login` | Authenticate and obtain JWT access & refresh tokens | No |
+| `POST` | `/auth/refresh` | Refresh an expired access token | Refresh Token |
+| `GET` | `/auth/profile` | Retrieve the authenticated user's profile | JWT Bearer |
+| `GET` | `/categories` | List all available clothing categories | No |
+| `GET` | `/products` | List all products (supports `?category=`, `?sort=`, `?search=`) | No |
+| `GET` | `/products/<id>` | Retrieve full details for a single product | No |
+| `POST` | `/orders` | Create an order with cart items and shipping details | JWT Optional |
+| `GET` | `/orders` | List order history for the logged-in customer | JWT Bearer |
+| `POST` | `/contact` | Submit inquiry form or newsletter subscription | No |
+
+---
+
+## ⚙️ Environment Variables
+
+Copy `.env.example` to `.env` to customize settings:
+
+```ini
+# Flask Backend
+FLASK_ENV=development
+PORT=5001
+SECRET_KEY=void-secret-key-production-32-chars
+DATABASE_URL=sqlite:///void_store.db
+
+# JWT Security
+JWT_SECRET_KEY=void-jwt-secret-token-key
+JWT_ACCESS_TOKEN_EXPIRES=3600
+
+# Redis & Celery (Optional)
+REDIS_URL=redis://localhost:6379/0
+
+# Next.js Frontend
+NEXT_PUBLIC_API_URL=http://localhost:5001/api/v1
+NEXT_PUBLIC_STORE_NAME="VOID ESSENTIALS"
+NEXT_PUBLIC_SUPPORT_EMAIL="support@voidessentials.store"
+```
+
+---
+
+## 📜 License
+
+Distributed under the **MIT License**. See `LICENSE` for details.
+
+<div align="center">
+  <sub>VOID ESSENTIALS Atelier • New York & Worldwide • Handcrafted with architectural precision.</sub>
+</div>
