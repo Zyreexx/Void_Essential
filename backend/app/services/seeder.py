@@ -1,6 +1,21 @@
+import os
+import sys
 import logging
-from backend.app.models import db
-from backend.app.models.models import Category, Product, ProductVariant, ProductImage, User
+
+# Ensure project root and backend dir are in sys.path regardless of execution context
+services_dir = os.path.dirname(os.path.abspath(__file__))
+backend_dir = os.path.abspath(os.path.join(services_dir, "..", ".."))
+root_dir = os.path.abspath(os.path.join(backend_dir, ".."))
+for path in (root_dir, backend_dir):
+    if path not in sys.path:
+        sys.path.insert(0, path)
+
+try:
+    from backend.app.models import db
+    from backend.app.models.models import Category, Product, ProductVariant, ProductImage, User
+except ImportError:
+    from app.models import db
+    from app.models.models import Category, Product, ProductVariant, ProductImage, User
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +56,18 @@ def seed_database():
     men_cat = Category.query.filter_by(slug="men").first()
     women_cat = Category.query.filter_by(slug="women").first()
     acc_cat = Category.query.filter_by(slug="accessories").first()
+
+    # Defensive fallback if categories were not found
+    if not men_cat:
+        men_cat = Category(name="Men", slug="men", tagline="Elevated everyday essentials.", display_order=1)
+        db.session.add(men_cat)
+    if not women_cat:
+        women_cat = Category(name="Women", slug="women", tagline="Effortless style for every you.", display_order=2)
+        db.session.add(women_cat)
+    if not acc_cat:
+        acc_cat = Category(name="Accessories", slug="accessories", tagline="Comfort meets cool everyday.", display_order=3)
+        db.session.add(acc_cat)
+    db.session.commit()
     
     # 2. Seed Initial Admin User if empty
     if User.query.filter_by(email="admin@voidessentials.store").first() is None:
@@ -521,3 +548,14 @@ def seed_database():
                 
         db.session.commit()
         logger.info(f"Seeded {len(products_data)} products successfully.")
+
+if __name__ == "__main__":
+    try:
+        from backend.app import create_app
+    except ImportError:
+        from app import create_app
+        
+    app = create_app(os.getenv("FLASK_ENV", "development"))
+    with app.app_context():
+        seed_database()
+        print("Database seed execution finished successfully.")
