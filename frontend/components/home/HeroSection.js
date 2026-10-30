@@ -227,19 +227,19 @@ export default function HeroSection() {
         {/* Center: Walking High-Fashion Model Figure with Ambient Hover Parallax */}
         <div
           ref={modelWrapperRef}
-          className="relative my-auto w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[380px] md:max-w-[420px] lg:max-w-[460px] mx-auto aspect-[739/1024] flex items-center justify-center will-change-transform py-2 sm:py-3"
+          className="relative my-auto flex items-center justify-center will-change-transform py-1 sm:py-2"
         >
           <div
             ref={modelImageRef}
-            className="relative w-full h-full drop-shadow-2xl overflow-hidden rounded-3xl border border-white/40 shadow-2xl transition-shadow duration-500 bg-neutral-100"
+            className="relative h-[48vh] sm:h-[54vh] lg:h-[60vh] max-h-[580px] aspect-[739/1024] drop-shadow-2xl overflow-hidden rounded-3xl border border-white/40 shadow-2xl transition-shadow duration-500"
           >
             <Image
               src="/images/hero-model.jpg"
               alt="Void Essentials Editorial Figure"
               fill
               priority
-              className="object-contain object-center"
-              sizes="(max-width: 640px) 320px, (max-width: 1024px) 420px, 460px"
+              className="object-cover object-center"
+              sizes="(max-width: 640px) 340px, (max-width: 1024px) 440px, 500px"
             />
           </div>
         </div>
