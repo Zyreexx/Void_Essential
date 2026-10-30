@@ -38,7 +38,7 @@ export default function HeroSection() {
       });
       gsap.set(modelImageRef.current, {
         scale: 1.15,
-        filter: "grayscale(100%) contrast(140%) brightness(0.7)",
+        filter: "grayscale(100%) contrast(110%) brightness(0.85)",
       });
       gsap.set(".hero-text-line", {
         opacity: 0,
@@ -72,58 +72,58 @@ export default function HeroSection() {
         ease: "power2.out",
       })
 
-      // --- SCENE 2: High-Fashion Model Rises through the Typography ---
-      .to(modelWrapperRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 2.2,
-        ease: "power3.out",
-      }, "-=1.8")
-      .to(modelImageRef.current, {
-        scale: 1,
-        filter: "grayscale(100%) contrast(120%) brightness(1)",
-        duration: 2.2,
-        ease: "power2.out",
-      }, "-=2.2")
+        // --- SCENE 2: High-Fashion Model Rises through the Typography ---
+        .to(modelWrapperRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 2.2,
+          ease: "power3.out",
+        }, "-=1.8")
+        .to(modelImageRef.current, {
+          scale: 1,
+          filter: "grayscale(100%) contrast(105%) brightness(1)",
+          duration: 2.2,
+          ease: "power2.out",
+        }, "-=2.2")
 
-      // --- SCENE 3: Editorial Typography Stagger ---
-      .to(".hero-text-line", {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        stagger: 0.18,
-        ease: "power2.out",
-      }, "-=1.6")
-      .to(lineRef.current, {
-        scaleX: 1,
-        duration: 1.4,
-        ease: "expo.out",
-      }, "-=1.2")
+        // --- SCENE 3: Editorial Typography Stagger ---
+        .to(".hero-text-line", {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          stagger: 0.18,
+          ease: "power2.out",
+        }, "-=1.6")
+        .to(lineRef.current, {
+          scaleX: 1,
+          duration: 1.4,
+          ease: "expo.out",
+        }, "-=1.2")
 
-      // --- SCENE 4: Season Badge Cascades Down ---
-      .to(seasonBadgeRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "power2.out",
-      }, "-=1.4")
+        // --- SCENE 4: Season Badge Cascades Down ---
+        .to(seasonBadgeRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: "power2.out",
+        }, "-=1.4")
 
-      // --- SCENE 5: Action Buttons Glide Up with Spring ---
-      .to(buttonsRef.current?.children || [], {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.2,
-        stagger: 0.16,
-        ease: "back.out(1.5)",
-      }, "-=1.1")
-      .to(quoteRef.current, {
-        opacity: 1,
-        x: 0,
-        duration: 1.2,
-        ease: "power2.out",
-      }, "-=1.0");
+        // --- SCENE 5: Action Buttons Glide Up with Spring ---
+        .to(buttonsRef.current?.children || [], {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.2,
+          stagger: 0.16,
+          ease: "back.out(1.5)",
+        }, "-=1.1")
+        .to(quoteRef.current, {
+          opacity: 1,
+          x: 0,
+          duration: 1.2,
+          ease: "power2.out",
+        }, "-=1.0");
 
       // 2. Continuous Ambient Floating Motion for Central Model Figure
       gsap.to(modelWrapperRef.current, {
@@ -192,10 +192,10 @@ export default function HeroSection() {
       </div>
 
       <div className="relative z-10 max-w-7xl w-full mx-auto flex flex-col justify-between h-full min-h-[68vh] sm:min-h-[72vh]">
-        
+
         {/* Top Floating Editorial Text & Season Badge */}
         <div className="flex justify-between items-start gap-4 pt-2 sm:pt-4">
-          
+
           {/* Left Editorial Header */}
           <div ref={headlineRef} className="space-y-0.5 sm:space-y-1 max-w-[200px] sm:max-w-xs">
             <p className="hero-text-line text-[11px] sm:text-sm font-semibold tracking-super-wide text-void-black uppercase leading-relaxed">
@@ -234,11 +234,11 @@ export default function HeroSection() {
             className="relative w-full h-full drop-shadow-2xl overflow-hidden rounded-3xl border border-white/40 shadow-2xl transition-shadow duration-500"
           >
             <Image
-              src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop"
+              src="/images/hero-model.jpg"
               alt="Void Essentials Editorial Figure"
               fill
               priority
-              className="object-cover object-top"
+              className="object-cover object-center"
               sizes="(max-width: 640px) 260px, (max-width: 1024px) 340px, 450px"
             />
           </div>
@@ -246,7 +246,7 @@ export default function HeroSection() {
 
         {/* Bottom Call to Actions & Atelier Reassurance */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 pt-2 sm:pt-4">
-          
+
           {/* Dual Action Pill Buttons */}
           <div ref={buttonsRef} className="flex items-center gap-3 sm:gap-6 w-full sm:w-auto">
             <Link
