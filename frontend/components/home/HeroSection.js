@@ -33,12 +33,12 @@ export default function HeroSection() {
       });
       gsap.set(modelWrapperRef.current, {
         opacity: 0,
-        y: 90,
-        scale: 0.92,
+        y: 60,
+        scale: 0.96,
       });
       gsap.set(modelImageRef.current, {
-        scale: 1.15,
-        filter: "grayscale(100%) contrast(110%) brightness(0.85)",
+        scale: 1,
+        filter: "grayscale(100%) contrast(105%) brightness(0.95)",
       });
       gsap.set(".hero-text-line", {
         opacity: 0,
@@ -227,19 +227,19 @@ export default function HeroSection() {
         {/* Center: Walking High-Fashion Model Figure with Ambient Hover Parallax */}
         <div
           ref={modelWrapperRef}
-          className="relative my-auto w-full max-w-[240px] xs:max-w-[270px] sm:max-w-xs md:max-w-md mx-auto aspect-[3/4] sm:aspect-[4/5] flex items-center justify-center will-change-transform py-2 sm:py-4"
+          className="relative my-auto w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[380px] md:max-w-[420px] lg:max-w-[460px] mx-auto aspect-[739/1024] flex items-center justify-center will-change-transform py-2 sm:py-3"
         >
           <div
             ref={modelImageRef}
-            className="relative w-full h-full drop-shadow-2xl overflow-hidden rounded-3xl border border-white/40 shadow-2xl transition-shadow duration-500"
+            className="relative w-full h-full drop-shadow-2xl overflow-hidden rounded-3xl border border-white/40 shadow-2xl transition-shadow duration-500 bg-neutral-100"
           >
             <Image
               src="/images/hero-model.jpg"
               alt="Void Essentials Editorial Figure"
               fill
               priority
-              className="object-cover object-center"
-              sizes="(max-width: 640px) 260px, (max-width: 1024px) 340px, 450px"
+              className="object-contain object-center"
+              sizes="(max-width: 640px) 320px, (max-width: 1024px) 420px, 460px"
             />
           </div>
         </div>
