@@ -83,7 +83,7 @@ export default function BestOfVoid() {
                   {/* Top-Right Wishlist Heart */}
                   <button
                     onClick={() => toggleWishlist(product)}
-                    className="absolute top-3 right-3 p-2 bg-white/90 text-black hover:text-red-500 rounded-full transition-all shadow-sm opacity-0 group-hover:opacity-100"
+                    className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 p-1.5 sm:p-2 bg-white/90 text-black hover:text-red-500 rounded-full transition-all shadow-sm opacity-90 sm:opacity-0 sm:group-hover:opacity-100"
                     aria-label={`Wishlist ${product.title}`}
                   >
                     <Heart className={`w-3.5 h-3.5 ${isWishlisted(product.id) ? "fill-red-500 text-red-500" : ""}`} />

@@ -16,3 +16,4 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location '$ro
 Write-Host "`nAll services triggered!" -ForegroundColor Yellow
 Write-Host "  • Storefront : http://localhost:3000" -ForegroundColor Cyan
 Write-Host "  • Backend API: http://localhost:5001" -ForegroundColor Cyan
+

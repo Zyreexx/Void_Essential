@@ -4,10 +4,11 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Phone, Mail, MapPin, Globe } from "lucide-react";
+import BestOfVoid from "@/components/home/BestOfVoid";
 
 export default function AboutPage() {
   return (
-    <div className="bg-void-cream min-h-screen py-16 px-4 sm:px-6 lg:px-8">
+    <div className="bg-void-cream min-h-screen py-8 sm:py-16 px-3.5 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto space-y-20">
         
         {/* ========================================================= */}
@@ -143,7 +144,14 @@ export default function AboutPage() {
         </div>
 
         {/* ========================================================= */}
-        {/* 5. VERIFIED ATELIER REPOSITORY & DISCLOSURES              */}
+        {/* 5. CURATED ATELIER PIECES (Product Cards Grid)            */}
+        {/* ========================================================= */}
+        <div className="pt-2">
+          <BestOfVoid />
+        </div>
+
+        {/* ========================================================= */}
+        {/* 6. VERIFIED ATELIER REPOSITORY & DISCLOSURES              */}
         {/* ========================================================= */}
         <div className="bg-void-pitch text-void-white p-8 sm:p-12 border border-void-charcoal space-y-6 rounded-3xl shadow-xl">
           <div className="border-b border-white/10 pb-4">

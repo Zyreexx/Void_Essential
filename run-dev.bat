@@ -19,3 +19,4 @@ echo - Storefront: http://localhost:3000
 echo - Backend API: http://localhost:5001
 echo.
 pause
+

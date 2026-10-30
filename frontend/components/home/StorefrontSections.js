@@ -38,7 +38,7 @@ export default function StorefrontSections() {
   ];
 
   const filteredProducts = products.filter((p) => {
-    const title = p.title.toLowerCase();
+    const title = (p?.title || "").toLowerCase();
     if (activeTab === "all") return true;
     if (activeTab === "jackets") {
       return title.includes("jacket") || title.includes("coat") || title.includes("puffer") || title.includes("blazer");
@@ -51,6 +51,8 @@ export default function StorefrontSections() {
     }
     return true;
   });
+
+  const displayProducts = filteredProducts.length > 0 ? filteredProducts : products;
 
   return (
     <section className="bg-white py-12 sm:py-16 px-3.5 sm:px-6 lg:px-8 border-t border-neutral-100 overflow-hidden">
@@ -91,7 +93,7 @@ export default function StorefrontSections() {
         {/* EDITORIAL MODEL CARDS (Matches Reference Image)           */}
         {/* ========================================================= */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6 lg:gap-8">
-          {filteredProducts.slice(0, 8).map((product) => (
+          {displayProducts.slice(0, 8).map((product) => (
             <div key={product.id} className="group flex flex-col justify-between">
               
               {/* Image Container with Studio Background & Smooth Rounded Corners */}
@@ -111,7 +113,7 @@ export default function StorefrontSections() {
                 {/* Top-Right Wishlist Heart */}
                 <button
                   onClick={() => toggleWishlist(product)}
-                  className="absolute top-3 right-3 p-2 bg-white/90 text-black hover:text-red-500 rounded-full transition-all shadow-sm opacity-0 group-hover:opacity-100"
+                  className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 p-1.5 sm:p-2 bg-white/90 text-black hover:text-red-500 rounded-full transition-all shadow-sm opacity-90 sm:opacity-0 sm:group-hover:opacity-100"
                   aria-label={`Wishlist ${product.title}`}
                 >
                   <Heart className={`w-3.5 h-3.5 ${isWishlisted(product.id) ? "fill-red-500 text-red-500" : ""}`} />

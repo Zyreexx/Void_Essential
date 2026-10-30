@@ -42,93 +42,93 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200/70 transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
         
         {/* ========================================================= */}
-        {/* 1. LEFT NAVIGATION LINKS (Desktop & Tablet)               */}
+        {/* 1. LEFT SECTION: Desktop Links & Mobile Hamburger          */}
         {/* ========================================================= */}
-        <div className="flex-1 hidden lg:flex items-center space-x-5 xl:space-x-7 text-[11px] xl:text-xs font-semibold tracking-widest text-neutral-800 uppercase">
+        <div className="flex-1 flex items-center">
           
-          {/* HOME */}
-          <Link
-            href="/"
-            className={`py-2 transition-opacity hover:opacity-60 ${
-              pathname === "/" ? "text-black font-extrabold" : "text-neutral-700"
-            }`}
-          >
-            HOME
-          </Link>
-
-          {/* SHOP ∨ with Mega Menu Trigger */}
-          <div
-            className="relative"
-            onMouseEnter={() => setShopMegaMenuOpen(true)}
-            onMouseLeave={() => setShopMegaMenuOpen(false)}
-          >
-            <button
-              onClick={() => setShopMegaMenuOpen(!shopMegaMenuOpen)}
-              className={`py-2 flex items-center gap-1 transition-opacity hover:opacity-60 ${
-                pathname?.startsWith("/catalog") || shopMegaMenuOpen ? "text-black font-extrabold" : "text-neutral-700"
-              }`}
-            >
-              <span>SHOP</span>
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${shopMegaMenuOpen ? "rotate-180" : ""}`} />
-            </button>
-          </div>
-
-          {/* ABOUT */}
-          <Link
-            href="/about"
-            className={`py-2 transition-opacity hover:opacity-60 ${
-              pathname === "/about" || pathname === "/legacy" ? "text-black font-extrabold" : "text-neutral-700"
-            }`}
-          >
-            ABOUT
-          </Link>
-
-          {/* CONTACT */}
-          <Link
-            href="/contact"
-            className={`py-2 transition-opacity hover:opacity-60 ${
-              pathname === "/contact" ? "text-black font-extrabold" : "text-neutral-700"
-            }`}
-          >
-            CONTACT
-          </Link>
-
-          {/* TRACK YOUR ORDER */}
-          <Link
-            href="/contact?topic=tracking"
-            className="py-2 transition-opacity hover:opacity-60 text-neutral-700"
-          >
-            TRACK YOUR ORDER
-          </Link>
-
-        </div>
-
-        {/* Mobile Hamburger Button */}
-        <div className="flex items-center lg:hidden">
+          {/* Mobile Hamburger Button */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2 -ml-2 text-neutral-900 hover:opacity-60 focus:outline-none"
+            className="lg:hidden p-2 -ml-2 text-neutral-900 hover:opacity-60 focus:outline-none"
             aria-label="Open navigation menu"
           >
             <Menu className="w-5 h-5" />
           </button>
+
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center space-x-5 xl:space-x-7 text-[11px] xl:text-xs font-semibold tracking-widest text-neutral-800 uppercase">
+            {/* HOME */}
+            <Link
+              href="/"
+              className={`py-2 transition-opacity hover:opacity-60 ${
+                pathname === "/" ? "text-black font-extrabold" : "text-neutral-700"
+              }`}
+            >
+              HOME
+            </Link>
+
+            {/* SHOP ∨ with Mega Menu Trigger */}
+            <div
+              className="relative"
+              onMouseEnter={() => setShopMegaMenuOpen(true)}
+              onMouseLeave={() => setShopMegaMenuOpen(false)}
+            >
+              <button
+                onClick={() => setShopMegaMenuOpen(!shopMegaMenuOpen)}
+                className={`py-2 flex items-center gap-1 transition-opacity hover:opacity-60 ${
+                  pathname?.startsWith("/catalog") || shopMegaMenuOpen ? "text-black font-extrabold" : "text-neutral-700"
+                }`}
+              >
+                <span>SHOP</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${shopMegaMenuOpen ? "rotate-180" : ""}`} />
+              </button>
+            </div>
+
+            {/* ABOUT */}
+            <Link
+              href="/about"
+              className={`py-2 transition-opacity hover:opacity-60 ${
+                pathname === "/about" || pathname === "/legacy" ? "text-black font-extrabold" : "text-neutral-700"
+              }`}
+            >
+              ABOUT
+            </Link>
+
+            {/* CONTACT */}
+            <Link
+              href="/contact"
+              className={`py-2 transition-opacity hover:opacity-60 ${
+                pathname === "/contact" ? "text-black font-extrabold" : "text-neutral-700"
+              }`}
+            >
+              CONTACT
+            </Link>
+
+            {/* TRACK YOUR ORDER */}
+            <Link
+              href="/contact?topic=tracking"
+              className="py-2 transition-opacity hover:opacity-60 text-neutral-700"
+            >
+              TRACK YOUR ORDER
+            </Link>
+          </nav>
         </div>
 
         {/* ========================================================= */}
-        {/* 2. CENTER: BRAND LOGO                                     */}
+        {/* 2. CENTER: BRAND LOGO (Always Centered)                    */}
         {/* ========================================================= */}
-        <div className="flex-shrink-0 flex items-center justify-center">
+        <div className="flex-shrink-0 flex items-center justify-center px-2">
           <Link href="/" className="inline-flex items-center group py-1">
             <Image
               src="/images/logo-horizontal-clean.png"
               alt="VOID ESSENTIALS"
-              width={190}
-              height={42}
+              width={160}
+              height={36}
               priority
-              className="h-5.5 sm:h-7.5 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              className="h-6 sm:h-7.5 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </Link>
         </div>
@@ -136,7 +136,7 @@ export default function Navbar() {
         {/* ========================================================= */}
         {/* 3. RIGHT UTILITY CLUSTER: INDIA | SEARCH | USER | BAG      */}
         {/* ========================================================= */}
-        <div className="flex-1 flex items-center justify-end space-x-3.5 sm:space-x-6 text-xs text-neutral-900">
+        <div className="flex-1 flex items-center justify-end space-x-1.5 sm:space-x-5 text-xs text-neutral-900">
           
           {/* REGION (DISPLAY ONLY) */}
           <span className="hidden sm:inline-block text-[11px] font-bold tracking-widest uppercase text-neutral-800 select-none cursor-default py-1">
@@ -146,10 +146,10 @@ export default function Navbar() {
           {/* SEARCH */}
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="p-1.5 hover:opacity-60 transition-opacity active:scale-95"
+            className="p-2 hover:opacity-60 transition-opacity active:scale-95"
             aria-label="Search collection"
           >
-            <Search className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[1.8]" />
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]" />
           </button>
 
           {/* USER ACCOUNT */}
@@ -191,22 +191,22 @@ export default function Navbar() {
                 setAuthMode("login");
                 setIsAuthModalOpen(true);
               }}
-              className="p-1.5 hover:opacity-60 transition-opacity active:scale-95"
+              className="p-2 hover:opacity-60 transition-opacity active:scale-95"
               aria-label="Sign in"
             >
-              <User className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[1.8]" />
+              <User className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]" />
             </button>
           )}
 
           {/* SHOPPING BAG */}
           <button
             onClick={() => setIsCartOpen(true)}
-            className="relative p-1.5 hover:opacity-60 transition-opacity active:scale-95"
+            className="relative p-2 hover:opacity-60 transition-opacity active:scale-95"
             aria-label={`Shopping bag containing ${cartCount} pieces`}
           >
-            <ShoppingBag className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[1.8]" />
+            <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]" />
             {cartCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-black text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
+              <span className="absolute 1 top-0.5 right-0.5 bg-black text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
                 {cartCount}
               </span>
             )}
