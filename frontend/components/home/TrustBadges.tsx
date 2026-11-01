@@ -3,7 +3,7 @@
 import React from "react";
 
 // Bespoke, hand-crafted editorial line icons mirroring the reference design
-function DeliveryTruckIcon({ className = "w-7 h-7" }) {
+function DeliveryTruckIcon({ className = "w-7 h-7" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
@@ -17,7 +17,7 @@ function DeliveryTruckIcon({ className = "w-7 h-7" }) {
   );
 }
 
-function ReturnBoxIcon({ className = "w-7 h-7" }) {
+function ReturnBoxIcon({ className = "w-7 h-7" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* Isometric open package / returns icon */}
@@ -31,7 +31,7 @@ function ReturnBoxIcon({ className = "w-7 h-7" }) {
   );
 }
 
-function QualitySealIcon({ className = "w-7 h-7" }) {
+function QualitySealIcon({ className = "w-7 h-7" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* Scalloped rosette seal badge with verification check */}
@@ -41,7 +41,7 @@ function QualitySealIcon({ className = "w-7 h-7" }) {
   );
 }
 
-function SecureLockIcon({ className = "w-7 h-7" }) {
+function SecureLockIcon({ className = "w-7 h-7" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* Modern curved padlock */}
@@ -52,8 +52,14 @@ function SecureLockIcon({ className = "w-7 h-7" }) {
   );
 }
 
+interface BadgeItem {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  subtitle: string;
+}
+
 export default function TrustBadges() {
-  const badges = [
+  const badges: BadgeItem[] = [
     {
       icon: DeliveryTruckIcon,
       title: "FAST DELIVERY",

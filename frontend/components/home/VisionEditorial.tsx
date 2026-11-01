@@ -5,7 +5,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
-const SLIDES = [
+interface SlideItem {
+  id: string;
+  tag: string;
+  titleLine1: string;
+  titleLine2: string;
+  description: string;
+  ctaText: string;
+  ctaLink: string;
+  image: string;
+  aspect: string;
+  caption: string;
+  rightHeading: string;
+  quote: string;
+}
+
+const SLIDES: SlideItem[] = [
   {
     id: "01",
     tag: "DROP ONE · THE SUPIMA TEE",
@@ -67,7 +82,7 @@ const SLIDES = [
 export default function VisionEditorial() {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const touchStartXRef = useRef(null);
+  const touchStartXRef = useRef<number | null>(null);
   const activeSlide = SLIDES[currentIdx];
 
   // Auto-advance slides every 7 seconds when not paused
@@ -87,11 +102,11 @@ export default function VisionEditorial() {
     setCurrentIdx((prev) => (prev + 1) % SLIDES.length);
   };
 
-  const handleTouchStart = (e) => {
+  const handleTouchStart = (e: React.TouchEvent<HTMLElement>) => {
     touchStartXRef.current = e.touches[0].clientX;
   };
 
-  const handleTouchEnd = (e) => {
+  const handleTouchEnd = (e: React.TouchEvent<HTMLElement>) => {
     if (touchStartXRef.current === null) return;
     const diff = touchStartXRef.current - e.changedTouches[0].clientX;
     if (diff > 40) {
@@ -248,4 +263,3 @@ export default function VisionEditorial() {
     </section>
   );
 }
-

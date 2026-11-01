@@ -1,28 +1,79 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { api } from "./api";
+import { Product, ProductVariant, User } from "@/types";
 
-const StoreContext = createContext(null);
+export interface CartItemModel {
+  cartItemId: string;
+  productId: number;
+  variantId?: number | null;
+  title: string;
+  slug: string;
+  price: number;
+  image?: string;
+  size: string;
+  color: string;
+  quantity: number;
+}
 
-export function StoreProvider({ children }) {
+export interface ToastItem {
+  id: number;
+  message: string;
+  type: "success" | "error" | "info" | "warning";
+}
+
+export interface StoreContextType {
+  // Cart
+  cart: CartItemModel[];
+  isCartOpen: boolean;
+  setIsCartOpen: (open: boolean) => void;
+  addToCart: (product: Product, variant?: ProductVariant | null, quantity?: number) => void;
+  updateCartQuantity: (cartItemId: string, newQty: number) => void;
+  removeFromCart: (cartItemId: string) => void;
+  clearCart: () => void;
+  cartSubtotal: number;
+  cartCount: number;
+  // Wishlist
+  wishlist: Product[];
+  toggleWishlist: (product: Product) => void;
+  isWishlisted: (productId: number) => boolean;
+  // Auth
+  user: User | null;
+  isAuthModalOpen: boolean;
+  setIsAuthModalOpen: (open: boolean) => void;
+  authMode: "login" | "register";
+  setAuthMode: (mode: "login" | "register") => void;
+  loginUser: (userData: User, accessToken: string, refreshToken?: string) => void;
+  logoutUser: () => void;
+  // Search
+  isSearchOpen: boolean;
+  setIsSearchOpen: (open: boolean) => void;
+  // Toasts
+  toasts: ToastItem[];
+  showToast: (message: string, type?: "success" | "error" | "info" | "warning") => void;
+}
+
+const StoreContext = createContext<StoreContextType | null>(null);
+
+export function StoreProvider({ children }: { children: ReactNode }) {
   // Cart State
-  const [cart, setCart] = useState([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cart, setCart] = useState<CartItemModel[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   
   // Wishlist State
-  const [wishlist, setWishlist] = useState([]);
+  const [wishlist, setWishlist] = useState<Product[]>([]);
   
   // Auth State
-  const [user, setUser] = useState(null);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState("login"); // 'login' or 'register'
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
   
   // Search Modal
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   
   // Toast notifications
-  const [toasts, setToasts] = useState([]);
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
 
   // Load from localStorage on client mount
   useEffect(() => {
@@ -35,7 +86,7 @@ export function StoreProvider({ children }) {
 
       const token = localStorage.getItem("void_access_token");
       if (token) {
-        api.getCurrentUser().then((res) => {
+        api.getCurrentUser().then((res: any) => {
           if (res?.success && res?.data?.user) {
             setUser(res.data.user);
           }
@@ -65,7 +116,7 @@ export function StoreProvider({ children }) {
   }, [wishlist]);
 
   // Toast dispatch
-  const showToast = (message, type = "info") => {
+  const showToast = (message: string, type: "success" | "error" | "info" | "warning" = "info") => {
     const id = Date.now();
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
@@ -74,9 +125,9 @@ export function StoreProvider({ children }) {
   };
 
   // Cart actions
-  const addToCart = (product, variant = null, quantity = 1) => {
+  const addToCart = (product: Product, variant: ProductVariant | null = null, quantity: number = 1) => {
     const selectedSize = variant?.size || product.sizes?.[0] || "Standard";
-    const selectedColor = variant?.color_name || (product.colors?.[0]?.name) || "Default";
+    const selectedColor = variant?.color_name || product.colors?.[0]?.name || "Default";
     const cartItemId = `${product.id}-${selectedSize}-${selectedColor}`;
 
     setCart((prev) => {
@@ -97,7 +148,7 @@ export function StoreProvider({ children }) {
             title: product.title,
             slug: product.slug,
             price: variant?.price_override || product.price,
-            image: product.primary_image || product.images?.[0]?.image_url,
+            image: product.primary_image || (product.images?.[0] as any)?.url || (product.images?.[0] as any)?.image_url,
             size: selectedSize,
             color: selectedColor,
             quantity
@@ -110,7 +161,7 @@ export function StoreProvider({ children }) {
     setIsCartOpen(true);
   };
 
-  const updateCartQuantity = (cartItemId, newQty) => {
+  const updateCartQuantity = (cartItemId: string, newQty: number) => {
     if (newQty <= 0) {
       removeFromCart(cartItemId);
       return;
@@ -122,7 +173,7 @@ export function StoreProvider({ children }) {
     );
   };
 
-  const removeFromCart = (cartItemId) => {
+  const removeFromCart = (cartItemId: string) => {
     setCart((prev) => prev.filter((item) => item.cartItemId !== cartItemId));
     showToast("Item removed from cart.", "info");
   };
@@ -136,7 +187,7 @@ export function StoreProvider({ children }) {
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   // Wishlist actions
-  const toggleWishlist = (product) => {
+  const toggleWishlist = (product: Product) => {
     setWishlist((prev) => {
       const exists = prev.some((p) => p.id === product.id);
       if (exists) {
@@ -149,10 +200,10 @@ export function StoreProvider({ children }) {
     });
   };
 
-  const isWishlisted = (productId) => wishlist.some((p) => p.id === productId);
+  const isWishlisted = (productId: number) => wishlist.some((p) => p.id === productId);
 
   // Auth actions
-  const loginUser = (userData, accessToken, refreshToken) => {
+  const loginUser = (userData: User, accessToken: string, refreshToken?: string) => {
     setUser(userData);
     localStorage.setItem("void_access_token", accessToken);
     if (refreshToken) localStorage.setItem("void_refresh_token", refreshToken);
@@ -205,7 +256,7 @@ export function StoreProvider({ children }) {
   );
 }
 
-export function useStore() {
+export function useStore(): StoreContextType {
   const context = useContext(StoreContext);
   if (!context) {
     throw new Error("useStore must be used within a StoreProvider");

@@ -6,9 +6,10 @@ import Link from "next/link";
 import { Star, ShoppingBag, Heart } from "lucide-react";
 import { useStore } from "@/lib/context";
 import { api } from "@/lib/api";
+import { Product } from "@/types";
 
 export default function BestOfVoid() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { addToCart, toggleWishlist, isWishlisted } = useStore();
 

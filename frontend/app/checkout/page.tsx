@@ -7,6 +7,20 @@ import { ArrowLeft, CheckCircle2, Lock, ShieldCheck, ShoppingBag, ArrowRight } f
 import { useStore } from "@/lib/context";
 import { api } from "@/lib/api";
 
+interface CompletedOrderItem {
+  product_title: string;
+  size: string;
+  quantity: number;
+  unit_price: number;
+}
+
+interface CompletedOrder {
+  order_number: string;
+  customer_email: string;
+  total_amount: number;
+  items: CompletedOrderItem[];
+}
+
 export default function CheckoutPage() {
   const { cart, cartSubtotal, clearCart, user, showToast } = useStore();
 
@@ -18,7 +32,7 @@ export default function CheckoutPage() {
   const [state, setState] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("India");
-  const [shippingMethod, setShippingMethod] = useState("standard");
+  const [shippingMethod] = useState("standard");
 
   // Payment simulation state
   const [cardNumber, setCardNumber] = useState("");
@@ -26,13 +40,13 @@ export default function CheckoutPage() {
   const [cardCvc, setCardCvc] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [completedOrder, setCompletedOrder] = useState(null);
+  const [completedOrder, setCompletedOrder] = useState<CompletedOrder | null>(null);
 
   const shippingFee = cartSubtotal >= 2500 ? 0.0 : shippingMethod === "express" ? 299.0 : 149.0;
   const tax = Math.round(cartSubtotal * 0.05 * 100) / 100;
   const total = (cartSubtotal + shippingFee + tax);
 
-  const handlePlaceOrder = async (e) => {
+  const handlePlaceOrder = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (cart.length === 0) {
       showToast("Your cart is empty.", "error");
@@ -69,7 +83,7 @@ export default function CheckoutPage() {
 
       const res = await api.createOrder(orderPayload);
       if (res.success && res.data?.order) {
-        setCompletedOrder(res.data.order);
+        setCompletedOrder(res.data.order as CompletedOrder);
         clearCart();
         showToast("Your order has been confirmed by the atelier.", "success");
       } else {

@@ -7,7 +7,7 @@ import { useStore } from "@/lib/context";
 import { api } from "@/lib/api";
 
 export default function AuthModal() {
-  const { isAuthModalOpen, setIsAuthModalOpen, authMode, setAuthMode, loginUser, showToast } = useStore();
+  const { isAuthModalOpen, setIsAuthModalOpen, authMode, setAuthMode, loginUser } = useStore();
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +17,7 @@ export default function AuthModal() {
 
   if (!isAuthModalOpen) return null;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMsg("");
     setIsLoading(true);

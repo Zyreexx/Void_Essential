@@ -5,8 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+interface CategoryItem {
+  title: string;
+  slug: string;
+  subtitle: string;
+  cta: string;
+  image: string;
+}
+
 export default function CategoryBand() {
-  const categories = [
+  const categories: CategoryItem[] = [
     {
       title: "MEN",
       slug: "men",

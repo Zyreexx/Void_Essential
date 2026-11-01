@@ -4,9 +4,10 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Plus, SlidersHorizontal } from "lucide-react";
+import { Heart, SlidersHorizontal, Star, ShoppingBag } from "lucide-react";
 import { useStore } from "@/lib/context";
 import { api } from "@/lib/api";
+import { Product } from "@/types";
 
 function CatalogContent() {
   const searchParams = useSearchParams();
@@ -18,7 +19,7 @@ function CatalogContent() {
   const [selectedSort, setSelectedSort] = useState("featured");
   const [onlyArchival, setOnlyArchival] = useState(initialArchival);
   const [viewingWishlist, setViewingWishlist] = useState(initialWishlist);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   const { addToCart, toggleWishlist, isWishlisted, wishlist } = useStore();
@@ -27,7 +28,7 @@ function CatalogContent() {
     async function fetchCatalog() {
       setLoading(true);
       try {
-        const params = {};
+        const params: Record<string, string> = {};
         if (selectedCategory && selectedCategory !== "all") {
           params.category = selectedCategory;
         }

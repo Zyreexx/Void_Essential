@@ -6,11 +6,12 @@ import Link from "next/link";
 import { Search, X, ArrowRight } from "lucide-react";
 import { useStore } from "@/lib/context";
 import { api } from "@/lib/api";
+import { Product } from "@/types";
 
 export default function SearchModal() {
   const { isSearchOpen, setIsSearchOpen } = useStore();
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function SearchModal() {
 
   // Close on Escape
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isSearchOpen) {
         setIsSearchOpen(false);
       }

@@ -1,4 +1,6 @@
-const FALLBACK_PRODUCTS = [
+import { Product, ApiResponse, Category, User, OrderPayload } from "@/types";
+
+const FALLBACK_PRODUCTS: Product[] = [
   {
     id: 1,
     title: "Shirt Jacket",
@@ -137,21 +139,20 @@ const FALLBACK_PRODUCTS = [
   }
 ];
 
-function getBaseUrl() {
+function getBaseUrl(): string {
   if (typeof window !== "undefined") {
-    // When in browser (desktop or mobile phone via WiFi), use relative path so Next.js rewrites proxy to Flask
     return "/api/v1";
   }
   return process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5001/api/v1";
 }
 
-export async function fetchApi(endpoint, options = {}) {
+export async function fetchApi<T = any>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
   const baseUrl = getBaseUrl();
   const url = `${baseUrl}${endpoint}`;
   
-  const headers = {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    ...(options.headers || {})
+    ...((options.headers as Record<string, string>) || {})
   };
 
   // Attach auth token if available in localStorage
@@ -172,16 +173,16 @@ export async function fetchApi(endpoint, options = {}) {
       throw new Error(`HTTP error ${response.status}`);
     }
 
-    const data = await response.json();
+    const data: ApiResponse<T> = await response.json();
     return data;
-  } catch (error) {
+  } catch (error: any) {
     console.warn(`[API] Fallback triggered for ${endpoint}:`, error.message);
     
     // Graceful fallback for catalog & products when backend is unreachable
     if (endpoint.startsWith("/products")) {
       return {
         success: true,
-        data: FALLBACK_PRODUCTS,
+        data: FALLBACK_PRODUCTS as unknown as T,
         count: FALLBACK_PRODUCTS.length,
         isFallback: true
       };
@@ -197,12 +198,12 @@ export async function fetchApi(endpoint, options = {}) {
 
 export const api = {
   // Products
-  getProducts: (params = {}) => {
+  getProducts: (params: Record<string, string> = {}) => {
     const query = new URLSearchParams(params).toString();
-    return fetchApi(`/products${query ? `?${query}` : ""}`);
+    return fetchApi<Product[]>(`/products${query ? `?${query}` : ""}`);
   },
-  getProductBySlug: async (slug) => {
-    const res = await fetchApi(`/products/${slug}`);
+  getProductBySlug: async (slug: string) => {
+    const res = await fetchApi<Product>(`/products/${slug}`);
     if (res.success && res.data) return res;
     // Fallback search
     const found = FALLBACK_PRODUCTS.find((p) => p.slug === slug);
@@ -211,39 +212,39 @@ export const api = {
     }
     return res;
   },
-  getFeaturedProducts: () => fetchApi("/products/featured"),
+  getFeaturedProducts: () => fetchApi<Product[]>("/products/featured"),
   
   // Categories
-  getCategories: () => fetchApi("/categories"),
-  getCategoryBySlug: (slug) => fetchApi(`/categories/${slug}`),
+  getCategories: () => fetchApi<Category[]>("/categories"),
+  getCategoryBySlug: (slug: string) => fetchApi<Category>(`/categories/${slug}`),
   
   // Orders
-  createOrder: (orderPayload) => fetchApi("/orders", {
+  createOrder: (orderPayload: OrderPayload) => fetchApi("/orders", {
     method: "POST",
     body: JSON.stringify(orderPayload)
   }),
-  getOrderByNumber: (orderNumber) => fetchApi(`/orders/${orderNumber}`),
+  getOrderByNumber: (orderNumber: string) => fetchApi(`/orders/${orderNumber}`),
   
   // Contact & Newsletter
-  submitContact: (contactPayload) => fetchApi("/contact", {
+  submitContact: (contactPayload: any) => fetchApi("/contact", {
     method: "POST",
     body: JSON.stringify(contactPayload)
   }),
-  subscribeNewsletter: (email) => fetchApi("/newsletter", {
+  subscribeNewsletter: (email: string) => fetchApi("/newsletter", {
     method: "POST",
     body: JSON.stringify({ email })
   }),
   
   // Auth
-  login: (credentials) => fetchApi("/auth/login", {
+  login: (credentials: { email: string; password?: string }) => fetchApi<{ user: User; access_token: string }>("/auth/login", {
     method: "POST",
     body: JSON.stringify(credentials)
   }),
-  register: (userData) => fetchApi("/auth/register", {
+  register: (userData: { email: string; password?: string; full_name?: string }) => fetchApi<{ user: User; access_token: string }>("/auth/register", {
     method: "POST",
     body: JSON.stringify(userData)
   }),
-  getCurrentUser: () => fetchApi("/auth/me"),
+  getCurrentUser: () => fetchApi<User>("/auth/me"),
   
   // Health
   checkHealth: () => fetchApi("/health"),

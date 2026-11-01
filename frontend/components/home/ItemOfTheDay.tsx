@@ -6,9 +6,10 @@ import Link from "next/link";
 import { ShoppingBag, ArrowRight, Check, Heart, ShieldCheck } from "lucide-react";
 import { useStore } from "@/lib/context";
 import { api } from "@/lib/api";
+import { Product } from "@/types";
 
 export default function ItemOfTheDay() {
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedImage, setSelectedImage] = useState(0);
   const [isAdded, setIsAdded] = useState(false);
@@ -18,11 +19,11 @@ export default function ItemOfTheDay() {
     async function loadFeatured() {
       try {
         const res = await api.getFeaturedProducts();
-        if (res.success && res.data?.length > 0) {
+        if (res.success && res.data && res.data.length > 0) {
           // Select an archival flagship piece as the Item of the Day
           const item = res.data[0];
           setProduct(item);
-          if (item.sizes?.length > 0) {
+          if (item.sizes && item.sizes.length > 0) {
             setSelectedSize(item.sizes[0]);
           }
         }
@@ -44,7 +45,7 @@ export default function ItemOfTheDay() {
   const images = [
     product.primary_image,
     product.secondary_image || product.primary_image
-  ].filter(Boolean);
+  ].filter(Boolean) as string[];
 
   return (
     <section className="bg-void-cream py-20 px-4 sm:px-6 lg:px-8 border-t border-void-border/60">
@@ -126,7 +127,7 @@ export default function ItemOfTheDay() {
             </div>
 
             {/* Size Selector */}
-            {product.sizes?.length > 0 && (
+            {product.sizes && product.sizes.length > 0 && (
               <div className="space-y-2 border-t border-void-border/60 pt-5">
                 <div className="flex justify-between items-center text-xs font-bold tracking-widest uppercase">
                   <span>SELECT SIZE: <strong className="text-black">{selectedSize}</strong></span>
@@ -192,4 +193,3 @@ export default function ItemOfTheDay() {
     </section>
   );
 }
-

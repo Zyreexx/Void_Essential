@@ -2,7 +2,7 @@
 
 import React from "react";
 import { CheckCircle2, AlertCircle, Info } from "lucide-react";
-import { useStore } from "@/lib/context";
+import { useStore, ToastItem } from "@/lib/context";
 
 export default function ToastContainer() {
   const { toasts } = useStore();
@@ -11,7 +11,7 @@ export default function ToastContainer() {
 
   return (
     <div className="fixed top-24 right-4 sm:right-8 z-50 flex flex-col space-y-2 pointer-events-none max-w-sm w-full">
-      {toasts.map((toast) => (
+      {toasts.map((toast: ToastItem) => (
         <div
           key={toast.id}
           className={`pointer-events-auto p-4 shadow-xl border flex items-center gap-3 text-xs font-medium tracking-wide transition-all animate-slide-in ${

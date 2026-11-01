@@ -7,17 +7,18 @@ import { useParams } from "next/navigation";
 import { Heart, ShoppingBag, Truck, RefreshCw, ShieldCheck, ArrowLeft, Check } from "lucide-react";
 import { useStore } from "@/lib/context";
 import { api } from "@/lib/api";
+import { Product } from "@/types";
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const slug = params?.slug;
+  const slug = (params?.slug as string) || "";
 
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity] = useState(1);
   const [activeTab, setActiveTab] = useState("fabric");
 
   const { addToCart, toggleWishlist, isWishlisted } = useStore();
@@ -32,10 +33,10 @@ export default function ProductDetailPage() {
           const prod = res.data;
           setProduct(prod);
           // Set initial variant selections
-          if (prod.variants?.length > 0) {
+          if (prod.variants && prod.variants.length > 0) {
             setSelectedSize(prod.variants[0].size);
             setSelectedColor(prod.variants[0].color_name);
-          } else if (prod.sizes?.length > 0) {
+          } else if (prod.sizes && prod.sizes.length > 0) {
             setSelectedSize(prod.sizes[0]);
           }
         }
@@ -85,7 +86,7 @@ export default function ProductDetailPage() {
 
   const currentPrice = currentVariant?.price_override || product.price;
   const availableStock = currentVariant?.stock_quantity ?? 10;
-  const allImages = product.images?.length > 0 ? product.images : [{ image_url: product.primary_image }];
+  const allImages = product.images && product.images.length > 0 ? product.images : [{ image_url: product.primary_image }];
 
   const handleAddToCart = () => {
     addToCart(product, currentVariant, quantity);
@@ -226,14 +227,14 @@ export default function ProductDetailPage() {
               </p>
 
               {/* Variant Selector: Color */}
-              {product.variants?.length > 0 && (
+              {product.variants && product.variants.length > 0 && (
                 <div className="mt-6">
                   <span className="text-[11px] font-bold tracking-widest uppercase text-void-black block mb-2">
                     COLOR: <span className="font-normal text-void-slate">{selectedColor}</span>
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {Array.from(new Set(product.variants.map((v) => v.color_name))).map((colorName) => {
-                      const colorObj = product.variants.find((v) => v.color_name === colorName);
+                      const colorObj = product.variants?.find((v) => v.color_name === colorName);
                       const isSelected = selectedColor === colorName;
                       return (
                         <button
@@ -259,7 +260,7 @@ export default function ProductDetailPage() {
               )}
 
               {/* Variant Selector: Size */}
-              {product.variants?.length > 0 && (
+              {product.variants && product.variants.length > 0 && (
                 <div className="mt-6">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-[11px] font-bold tracking-widest uppercase text-void-black">
@@ -273,7 +274,7 @@ export default function ProductDetailPage() {
                   <div className="grid grid-cols-4 sm:grid-cols-5 gap-2.5">
                     {Array.from(new Set(product.variants.map((v) => v.size))).map((sz) => {
                       const isSelected = selectedSize === sz;
-                      const variantForSize = product.variants.find(
+                      const variantForSize = product.variants?.find(
                         (v) => v.size === sz && (!selectedColor || v.color_name === selectedColor)
                       );
                       const isOutOfStock = (variantForSize?.stock_quantity ?? 0) <= 0;

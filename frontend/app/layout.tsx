@@ -1,4 +1,6 @@
 import "@/styles/globals.css";
+import type { Metadata, Viewport } from "next";
+import React from "react";
 import { StoreProvider } from "@/lib/context";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
@@ -8,7 +10,7 @@ import AuthModal from "@/components/auth/AuthModal";
 import SearchModal from "@/components/search/SearchModal";
 import ToastContainer from "@/components/ui/ToastContainer";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "VOID ESSENTIALS — Essentials, without excess",
   description: "Contemporary luxury clothing brand engineered with architectural minimalism, heavyweight textiles, and archival tailoring.",
   icons: {
@@ -21,14 +23,14 @@ export const metadata = {
   },
 };
 
-export const viewport = {
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
   themeColor: "#0A0A0A",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-void-cream text-void-black selection:bg-void-black selection:text-void-white">

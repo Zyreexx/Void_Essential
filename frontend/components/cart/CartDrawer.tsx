@@ -23,7 +23,7 @@ export default function CartDrawer() {
 
   // Close on Escape key
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isCartOpen) {
         setIsCartOpen(false);
       }

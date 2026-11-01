@@ -7,15 +7,15 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import gsap from "gsap";
 
 export default function HeroSection() {
-  const containerRef = useRef(null);
-  const watermarkRef = useRef(null);
-  const modelWrapperRef = useRef(null);
-  const modelImageRef = useRef(null);
-  const headlineRef = useRef(null);
-  const lineRef = useRef(null);
-  const seasonBadgeRef = useRef(null);
-  const buttonsRef = useRef(null);
-  const quoteRef = useRef(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const watermarkRef = useRef<HTMLDivElement>(null);
+  const modelWrapperRef = useRef<HTMLDivElement>(null);
+  const modelImageRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const seasonBadgeRef = useRef<HTMLDivElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+  const quoteRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -136,7 +136,7 @@ export default function HeroSection() {
       });
 
       // 3. Interactive Depth Parallax on Mouse Move
-      const handleMouseMove = (e) => {
+      const handleMouseMove = (e: MouseEvent) => {
         if (!containerRef.current) return;
         const { clientX, clientY } = e;
         const { innerWidth, innerHeight } = window;

@@ -13,8 +13,7 @@ import {
   Globe,
   CreditCard,
   RefreshCw,
-  Package,
-  ShieldCheck
+  Package
 } from "lucide-react";
 import { api } from "@/lib/api";
 import { useStore } from "@/lib/context";
@@ -47,7 +46,7 @@ function ContactContent() {
     }
   }, [activeTab, orderNumber]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!name || !email || !message) {
       setErrorMessage("Please complete all required fields.");

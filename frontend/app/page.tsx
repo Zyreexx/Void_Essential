@@ -1,3 +1,4 @@
+import React from "react";
 import HeroSection from "@/components/home/HeroSection";
 import StorefrontSections from "@/components/home/StorefrontSections";
 import CategoryBand from "@/components/home/CategoryBand";
